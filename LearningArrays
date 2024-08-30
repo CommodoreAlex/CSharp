@@ -1,0 +1,33 @@
+using System;
+
+class Program
+{
+    public static void Main()
+    {
+        /*
+        This variable will hold an array that holds integers
+        int[] array;
+
+        This creates an array in memory, instantiated with 'new' with 5 elements each with a value of zero
+        array = new int[] { 1, 2, 3, 4, 5, };
+
+        Multidimensional arrays
+        int[,] matrix;
+
+        Holds integers, instantiated with 'new', type of elements is int, and 3 rows and 3 columns in square brackets
+        matrix = new int[3, 3];
+        */
+
+        int[,] matrix = new int[,] { {1, 2, 3}, {4, 5, 6}, {7, 8, 9} };
+
+        // Use the GetLength method to get the number of rows (dimension 0) and columns (dimension 1)
+        for (int i = 0; i < matrix.GetLength(0); i++) {
+            for (int j = 0; j < matrix.GetLength(1); j++)
+            {
+                // Access each element of the array using the indices
+                Console.Write(matrix[i, j] + " ");
+            }
+            Console.WriteLine(); // Print a newline at the end of each row
+        }
+    }
+}
