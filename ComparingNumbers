@@ -1,0 +1,21 @@
+using System;
+
+class Program
+{
+    public static void Main()
+    {
+        Console.Write("Enter a number to compare: ");
+        string number = Console.ReadLine();
+        int compare = Convert.ToInt32(number);
+
+        if (compare > 0) {
+            Console.WriteLine("The number is positive");
+        } 
+        else if (compare < 0) {
+            Console.WriteLine("The number is negative");
+        }
+        else {
+            Console.WriteLine("The number is zero");
+        }
+    }
+}
