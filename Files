@@ -1,0 +1,20 @@
+using System;
+using System.IO;
+
+class Program
+{
+    public static void Main()
+    {
+        // Check if a file exists
+        if (File.Exists("test.txt"))
+        {
+            // Read the contents of the file
+            string content = File.ReadAllText("test.txt");
+            Console.WriteLine(content);
+        }
+        else
+        {
+            Console.WriteLine("The file does not exist.");
+        }
+    }
+}
