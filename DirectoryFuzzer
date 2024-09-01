@@ -1,0 +1,66 @@
+using System;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.IO;
+
+class DirectoryFuzzer
+{
+    static async Task Main(string[] args)
+    {
+        // Check if the URL and filename were provided
+        if (args.Length < 2)
+        {
+            Console.WriteLine("Usage: DirectoryFuzzer <base_url> <wordlist_file>");
+            return;
+        }
+
+        string baseUrl = args[0];
+        string wordlistFile = args[1];
+
+        // Read subdirectory names from the provided file
+        List<string> subdirectories;
+        try
+        {
+            subdirectories = new List<string>(File.ReadAllLines(wordlistFile));
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error reading wordlist file: {ex.Message}");
+            return;
+        }
+
+        // Initialize HttpClient
+        using (HttpClient client = new HttpClient())
+        {
+            // Iterate through each subdirectory from the wordlist file
+            foreach (string subdir in subdirectories)
+            {
+                string trimmedSubdir = subdir.Trim();
+                if (string.IsNullOrEmpty(trimmedSubdir)) continue; // Skip empty lines
+
+                string urlToCheck = $"{baseUrl.TrimEnd('/')}/{trimmedSubdir}";
+
+                try
+                {
+                    // Send a GET request to the URL
+                    HttpResponseMessage response = await client.GetAsync(urlToCheck);
+
+                    // Check if the response indicates the subdirectory exists
+                    if (response.IsSuccessStatusCode)
+                    {
+                        Console.WriteLine($"[+] {urlToCheck} - {response.StatusCode}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"[NOT FOUND] {urlToCheck} - {response.StatusCode}");
+                    }
+                }
+                catch (HttpRequestException e)
+                {
+                    Console.WriteLine($"[ERROR] {urlToCheck} - {e.Message}");
+                }
+            }
+        }
+    }
+}
